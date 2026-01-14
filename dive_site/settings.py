@@ -55,6 +55,7 @@ MIDDLEWARE = [
 ]
 
 
+
 # =====================
 # URLS / TEMPLATES
 # =====================
@@ -113,19 +114,15 @@ USE_TZ = True
 # =====================
 # STATIC FILES (CRÍTICO)
 # =====================
-
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+
 
 # =====================
 # DEFAULT PK
