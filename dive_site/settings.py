@@ -24,9 +24,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 SECRET_KEY = 'django-insecure-hnjxolsv@5)+5-&w5r_$omkrvn0grnf@5b(7g6v15x&ap4xhjq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["divecr-production.up.railway.app", "localhost", "127.0.0.1"]
+
 
 
 # Application definition
