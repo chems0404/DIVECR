@@ -1,0 +1,492 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tours Local | Punta Leona | Dive Costa Rica</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#334155;
+      --soft:#f4f9fc;
+      --accent:#ff8a00;
+      --accent-hover:#e67600;
+      --max:1200px;
+    }
+
+    html{ scroll-behavior:smooth; }
+    body{ background:#fff; color:var(--ink); }
+
+    .wrap{ max-width:var(--max); margin:0 auto; padding:0 16px; }
+
+    /* ================= HERO (TEXTO IZQ + FOTO DER) ================= */
+    .hero{ padding:64px 0 40px; }
+
+    .hero-card{
+      border-radius:26px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow:0 18px 55px rgba(2,6,23,.10);
+      background:#ffffff;
+      min-height:540px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .hero-left{
+      padding:44px;
+      display:flex;
+      align-items:center;
+    }
+
+    .hero-content{ max-width:680px; }
+
+    .hero-right{
+      background:url("{% static 'img/TOURS-LOCAL-HERO.jpg' %}") center/cover no-repeat;
+      position:relative;
+      min-height:540px;
+    }
+
+    .hero-right::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(90deg, rgba(255,255,255,.00) 0%, rgba(15,23,42,.16) 100%);
+    }
+
+    .kicker{
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-size:12px;
+      color:rgba(15,23,42,.70);
+      margin-bottom:10px;
+    }
+
+    h1{
+      font-size:clamp(36px, 4vw, 58px);
+      line-height:1.05;
+      letter-spacing:-.8px;
+      font-weight:900;
+      margin:0 0 14px;
+    }
+
+    .accent{ color:var(--accent); }
+
+    .lead{
+      font-size:clamp(18px, 1.25vw, 22px);
+      line-height:1.7;
+      color:var(--muted);
+      margin-bottom:22px;
+    }
+
+    .pillrow{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin:18px 0 26px; padding:0; list-style:none;
+    }
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(15,23,42,.06);
+      font-weight:800;
+      color:rgba(15,23,42,.85);
+      font-size:13px;
+    }
+
+    .cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+
+    .btn-cta{
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:900;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:220px;
+      transition:.25s ease;
+    }
+
+    .btn-cta:hover{
+      background:var(--accent-hover);
+      transform:translateY(-2px);
+      box-shadow:0 12px 30px rgba(0,0,0,.15);
+      color:#fff;
+    }
+
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(15,23,42,.20);
+      color:rgba(15,23,42,.90);
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:900;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:220px;
+      transition:.25s ease;
+    }
+
+    .btn-ghost:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(2,6,23,.10);
+      color:rgba(15,23,42,.95);
+      border-color:rgba(15,23,42,.35);
+    }
+
+    /* ================= SECTIONS ================= */
+    .section{ padding:64px 0; }
+
+    .section-title{
+      font-size:clamp(26px, 2.6vw, 40px);
+      font-weight:900;
+      letter-spacing:-.5px;
+      margin:0 0 10px;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.75;
+      margin:0 0 26px;
+      max-width:900px;
+    }
+
+    /* Cards / grids */
+    .grid3{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:16px; }
+
+    .cardx{
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:18px;
+      padding:22px;
+      background:linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+      box-shadow:0 10px 24px rgba(2,6,23,.06);
+      height:100%;
+    }
+
+    .cardx h3{ font-size:18px; font-weight:900; margin:0 0 8px; }
+    .cardx p{ color:var(--muted); margin:0; line-height:1.65; }
+
+    .listy{
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.85;
+      margin:0;
+      padding-left:18px;
+    }
+
+    /* ================= REQUISITOS + ITINERARIO ================= */
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:48px;
+      align-items:flex-start;
+    }
+
+    .info-block{
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      border:1px solid rgba(15,23,42,.08);
+      border-radius:22px;
+      padding:32px;
+      box-shadow:0 10px 26px rgba(2,6,23,.06);
+    }
+
+    .muted{
+      color:rgba(15,23,42,.65);
+      font-size:16px;
+    }
+
+    /* ================= PRICE BLOCK ================= */
+    .price-wrap{
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:22px;
+      padding:26px;
+      background:linear-gradient(180deg, var(--soft) 0%, #fff 100%);
+    }
+
+    .price-grid{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .price-card{
+      background:#fff;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:20px;
+      padding:22px;
+      text-align:center;
+      box-shadow:0 10px 24px rgba(2,6,23,.06);
+      height:100%;
+    }
+
+    .price-card h3{ font-weight:900; margin-bottom:8px; }
+
+    .price{
+      font-size:26px;
+      font-weight:900;
+      color:var(--ink);
+      margin:10px 0 14px;
+    }
+
+    .mini{ color:var(--muted); font-size:14px; }
+
+    .center-img{
+      width:260px;
+      aspect-ratio: 3/4;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow:0 14px 40px rgba(2,6,23,.12);
+      background:#ddd;
+    }
+
+    .center-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 991px){
+      .hero-card{ grid-template-columns: 1fr; min-height: unset; }
+      .hero-left{ padding:28px; }
+      .hero-right{ min-height:320px; }
+
+      .grid3{ grid-template-columns:1fr; }
+      .grid-2{ grid-template-columns:1fr; gap:28px; }
+
+      .price-grid{ grid-template-columns:1fr; }
+      .center-img{ width:100%; max-width:420px; margin:0 auto; }
+
+      .btn-cta,.btn-ghost{ width:100%; min-width:unset; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO -->
+  <header class="wrap hero">
+    <div class="hero-card">
+      <div class="hero-left">
+        <div class="hero-content">
+          <div class="kicker">Tour de buceo & snorkeling</div>
+          <h1>
+            Punta Leona<br>
+            <span class="accent">Local</span>
+          </h1>
+          <p class="lead">
+            ¡Más cerca que nunca! Somos el centro de buceo más cercano a San José.
+            Buceo en Punta Leona – Herradura.
+          </p>
+
+          <ul class="pillrow">
+            <li class="pill">Buceo local</li>
+            <li class="pill">Snorkeling</li>
+            <li class="pill">Salida 8:30 am</li>
+          </ul>
+
+          <div class="cta-row">
+            <a class="btn-cta" href="https://api.whatsapp.com/send?phone=50687172883" target="_blank" rel="noopener">
+              Consultar por WhatsApp
+            </a>
+            <a class="btn-ghost" href="{% url 'home' %}">Volver al inicio</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- DESCRIPCIÓN -->
+    <section class="section" id="detalles">
+      <h2 class="section-title">¿Qué hace especial este tour?</h2>
+      <p class="section-sub">
+        Nuestros buceos locales se caracterizan por ser poco profundos (generalmente no superan los 50 pies),
+        gracias a la cercanía de la piedra volcánica a la costa, lo que permite realizar buceos cerca de esta formación.
+        Además, contamos con el único museo submarino de toda Centroamérica, haciendo de la zona un destino ideal todo el año.
+      </p>
+    </section>
+
+    <!-- INCLUYE (iconos -> cards) -->
+    <section class="section" id="incluye">
+      <h2 class="section-title">Incluye</h2>
+      <p class="section-sub">
+        Todo lo necesario para que llegues, disfrutes y bucees con seguridad.
+      </p>
+
+      <div class="grid3">
+        <div class="cardx">
+          <h3>Equipos de buceo</h3>
+          <p>Equipo completo para la actividad.</p>
+        </div>
+        <div class="cardx">
+          <h3>Instructor / Dive Master</h3>
+          <p>Guía de buceo durante la experiencia.</p>
+        </div>
+        <div class="cardx">
+          <h3>Buceos</h3>
+          <p>2 inmersiones en el mar.</p>
+        </div>
+
+        <div class="cardx">
+          <h3>Vestidores</h3>
+          <p>Duchas, vestidores y servicios sanitarios.</p>
+        </div>
+        <div class="cardx">
+          <h3>Snacks</h3>
+          <p>Merienda: frutas, agua y jugo en el bote.</p>
+        </div>
+        <div class="cardx">
+          <h3>Bote de buceo</h3>
+          <p>Bote especial para la actividad de buceo.</p>
+        </div>
+
+        <div class="cardx">
+          <h3>Enfermería</h3>
+          <p>Atención primaria en Punta Leona.</p>
+        </div>
+        <div class="cardx">
+          <h3>Seguros de buceo</h3>
+          <p>Póliza de responsabilidad civil.</p>
+        </div>
+        <div class="cardx">
+          <h3>Parqueo privado</h3>
+          <p>Parqueo privado sin costo extra.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NO INCLUYE -->
+    <section class="section" id="no-incluye">
+      <h2 class="section-title"><span class="accent">No incluye</span></h2>
+
+      <div class="grid3">
+        <div class="cardx">
+          <h3>Transporte</h3>
+          <p>Pregunta por opciones de transporte privado (San José / Jacó → Punta Leona).</p>
+        </div>
+        <div class="cardx">
+          <h3>Hospedaje</h3>
+          <p>Al estar en zona hotelera contamos con diferentes opciones. Pregunta por estas opciones.</p>
+        </div>
+        <div class="cardx">
+          <h3>Alimentación</h3>
+          <p>El hotel ofrece opciones gastronómicas, bar-restaurante y mini supermercado dentro del complejo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REQUISITOS + ITINERARIO -->
+    <section class="section" id="requisitos-itinerario">
+      <div class="grid-2">
+
+        <div class="info-block">
+          <h2 class="section-title">Requisitos</h2>
+          <ul class="listy">
+            <li><strong>Snorkeling:</strong> N/A</li>
+            <li><strong>Scuba Diving:</strong> Open Water Diver</li>
+          </ul>
+          <p class="muted mt-3 mb-0">
+            Si no estás certificado, revisa nuestra opción “Primera vez” para probar hoy.
+          </p>
+        </div>
+
+        <div class="info-block">
+          <h2 class="section-title">Itinerario</h2>
+          <ul class="listy">
+            <li><strong>Hora de salida:</strong> 8:30 hrs</li>
+            <li><strong>Hora de llegada:</strong> 12:30 hrs (aprox.)</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONSIDERACIONES + RECOMENDACIONES -->
+    <section class="section" id="consideraciones">
+      <div class="grid-2">
+
+        <div class="info-block">
+          <h2 class="section-title">Consideraciones</h2>
+          <p class="section-sub" style="margin-bottom:14px;">
+            El centro de buceo está ubicado dentro del Hotel y Club Punta Leona. Al ser un lugar privado,
+            es necesario solicitar un pase especial el día previo a la actividad. El código de ingreso se
+            proporcionará una vez completada la reserva.
+          </p>
+          <p class="muted mb-0">
+            Los tours están sujetos a disponibilidad y mínimo de participantes.
+            <br>• Mínimo Snorkeling: 2 personas
+            <br>• Mínimo Buceo Scuba: 2 personas
+            <br><em>(Consulta si tenemos más personas interesadas en las fechas que deseas acompañarnos)</em>
+          </p>
+        </div>
+
+        <div class="info-block">
+          <h2 class="section-title">Recomendaciones</h2>
+          <ul class="listy">
+            <li>Ropa cómoda</li>
+            <li>Bloqueador solar</li>
+            <li>Sombrero / gorra</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESERVAR (2 columnas + imagen centro) -->
+    <section class="section" id="reservar">
+      <h2 class="section-title">Reservar</h2>
+      <p class="section-sub">
+        Selecciona tu experiencia y escríbenos por WhatsApp para confirmar disponibilidad.
+      </p>
+
+      <div class="price-wrap">
+        <div class="price-grid">
+
+          <div class="price-card">
+            <h3>Snorkeling</h3>
+            <div class="mini">Tour local</div>
+            <div class="price">US$ 78.75 <span class="mini">+ Taxes</span></div>
+            <a class="btn-cta" href="https://api.whatsapp.com/send?phone=50687172883" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+          </div>
+
+          <div class="center-img">
+            <img src="{% static 'img/TOURS-LOCAL-CENTER.jpg' %}" alt="Tour Punta Leona">
+          </div>
+
+          <div class="price-card">
+            <h3>Scuba Diving</h3>
+            <div class="mini">2 inmersiones</div>
+            <div class="price">US$ 135 <span class="mini">+ Taxes</span></div>
+            <a class="btn-cta" href="https://api.whatsapp.com/send?phone=50687172883" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
