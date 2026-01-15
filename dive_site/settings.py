@@ -6,28 +6,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # =====================
 # SECURITY
 # =====================
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-key")
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-dev-key"
-)
+DEBUG = os.environ.get("DEBUG", "0") == "1"
 
-DEBUG = False
-
-ALLOWED_HOSTS = [
-    "divecr-production.up.railway.app",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = os.environ.get(
+    "ALLOWED_HOSTS",
+    "divecr-production.up.railway.app,localhost,127.0.0.1"
+).split(",")
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://divecr-production.up.railway.app"
+    "https://divecr-production.up.railway.app",
 ]
+
+# Si usas proxy (Railway / reverse proxy)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = not DEBUG
 
 # =====================
 # APPLICATIONS
 # =====================
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,12 +38,10 @@ INSTALLED_APPS = [
 
 # =====================
 # MIDDLEWARE
-# (WhiteNoise SIEMPRE justo después de SecurityMiddleware)
 # =====================
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # <- justo aquí
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -54,13 +50,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
-
-
 # =====================
 # URLS / TEMPLATES
 # =====================
-
 ROOT_URLCONF = "dive_site.urls"
 
 TEMPLATES = [
@@ -84,7 +76,6 @@ WSGI_APPLICATION = "dive_site.wsgi.application"
 # =====================
 # DATABASE
 # =====================
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -95,7 +86,6 @@ DATABASES = {
 # =====================
 # PASSWORD VALIDATION
 # =====================
-
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -106,28 +96,39 @@ AUTH_PASSWORD_VALIDATORS = [
 # =====================
 # INTERNATIONALIZATION
 # =====================
-
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 # =====================
-# STATIC FILES (CRÍTICO)
+# STATIC FILES (Railway + WhiteNoise)
 # =====================
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Si tienes una carpeta /static en la raíz del proyecto:
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# WhiteNoise: manifest (recomendado)
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
 }
 
+# (Opcional) si quieres que WhiteNoise busque el "manifest" más tolerante en algunos casos:
+# WHITENOISE_MANIFEST_STRICT = False
 
+# =====================
+# MEDIA (solo si tienes uploads / ImageField)
+# OJO: WhiteNoise NO sirve media en prod; para prod usa S3/Cloudinary/volumen
+# =====================
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "media"
 
 # =====================
 # DEFAULT PK
 # =====================
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

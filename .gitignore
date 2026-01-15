@@ -13,3 +13,6 @@ venv/
 
 # VS Code
 .vscode/
+
+
+staticfiles/
