@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 
+import dj_database_url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # =====================
@@ -10,18 +12,25 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-key")
 
 DEBUG = os.environ.get("DEBUG", "0") == "1"
 
+# Hosts permitidos (Railway + local). Puedes añadir tu dominio aquí también.
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "divecr-production.up.railway.app,localhost,127.0.0.1"
+    "divecr-production.up.railway.app,.up.railway.app,localhost,127.0.0.1",
 ).split(",")
 
 CSRF_TRUSTED_ORIGINS = [
     "https://divecr-production.up.railway.app",
+    # Si usas dominio propio, agrega aquí:
+    # "https://tudominio.com",
 ]
 
 # Si usas proxy (Railway / reverse proxy)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = not DEBUG
+
+# Recomendado cuando hay SSL redirect detrás de proxy
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
 
 # =====================
 # APPLICATIONS
@@ -76,12 +85,23 @@ WSGI_APPLICATION = "dive_site.wsgi.application"
 # =====================
 # DATABASE
 # =====================
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# Railway normalmente te da DATABASE_URL (Postgres). Local puedes seguir con sqlite.
+DATABASE_URL = os.environ.get("DATABASE_URL", "")
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # =====================
 # PASSWORD VALIDATION
@@ -107,23 +127,25 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Si tienes una carpeta /static en la raíz del proyecto:
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# Solo agregar STATICFILES_DIRS si la carpeta existe
+STATICFILES_DIRS = []
+STATIC_DIR = BASE_DIR / "static"
+if STATIC_DIR.exists():
+    STATICFILES_DIRS.append(STATIC_DIR)
 
-# WhiteNoise: manifest (recomendado)
+# WhiteNoise (Django 4.2): usar STORAGES
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    },
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
-# (Opcional) si quieres que WhiteNoise busque el "manifest" más tolerante en algunos casos:
+# Si alguna vez te falla por "missing manifest entry" (raro si haces collectstatic bien),
+# puedes temporalmente desactivar lo estricto:
 # WHITENOISE_MANIFEST_STRICT = False
 
 # =====================
 # MEDIA (solo si tienes uploads / ImageField)
-# OJO: WhiteNoise NO sirve media en prod; para prod usa S3/Cloudinary/volumen
+# WhiteNoise NO sirve media en prod; para prod usa S3/Cloudinary/volumen
 # =====================
 # MEDIA_URL = "/media/"
 # MEDIA_ROOT = BASE_DIR / "media"
