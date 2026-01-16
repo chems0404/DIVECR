@@ -359,7 +359,6 @@
     }
 
     /* ================= RESPONSIVE (CORREGIDO) ================= */
-    /* Tablet: 2 columnas */
     @media (max-width:991px){
       .main-logo{ margin-left:auto; margin-right:auto; }
       .text-block{ max-width:none; }
@@ -370,7 +369,6 @@
       .btn-cta, .btn-ghost{ width:100%; min-width:unset; }
     }
 
-    /* Móvil: 1 columna */
     @media (max-width:576px){
       .logos-grid{ grid-template-columns:1fr; }
       .logo-box{ height:130px; }
@@ -536,7 +534,7 @@
   </div>
 </section>
 
-<!-- ================= NUEVA SECCIÓN: OPEN WATER (3 OPCIONES) ================= -->
+<!-- ================= OPEN WATER (3 OPCIONES) ================= -->
 <section class="ow" id="open-water-plus">
   <div class="ow-inner">
 
@@ -589,7 +587,11 @@
              class="btn-cta" target="_blank" rel="noopener">
             WhatsApp
           </a>
-          <a href="{% url 'open_water' %}" class="btn-ghost">Ver cursos</a>
+
+          <!-- CAMBIO: ahora abre modal con menú -->
+          <button type="button" class="btn-ghost" data-bs-toggle="modal" data-bs-target="#otrosCursosModal">
+            Ver cursos
+          </button>
         </div>
       </div>
 
@@ -648,6 +650,98 @@
       </div>
 
       <div class="modal-footer" style="background:#fff;">
+        <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal"
+                style="border-radius:999px; padding:10px 16px;">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: Otros cursos (Educación continua + Especialidades) ===== -->
+<div class="modal fade" id="otrosCursosModal" tabindex="-1" aria-labelledby="otrosCursosModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius:22px; overflow:hidden; border:1px solid rgba(15,23,42,.10);">
+
+      <div class="modal-header" style="background:#fff;">
+        <div>
+          <h5 class="modal-title fw-bold mb-1" id="otrosCursosModalLabel">Otros cursos</h5>
+          <div style="color:rgba(15,23,42,.65); font-size:14px;">
+            Elige una opción y te llevamos directo a la información.
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body" style="background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);">
+
+        <!-- Educación continua -->
+        <div class="mb-3" style="font-weight:900; color:rgba(15,23,42,.85); letter-spacing:.06em; text-transform:uppercase; font-size:12px;">
+          Educación continua
+        </div>
+
+        <div class="d-grid gap-2 mb-4">
+          <a href="{% url 'advanced_adventure' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Advanced Adventure
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Avanza al siguiente nivel</div>
+          </a>
+
+          <a href="{% url 'react_right_rcp' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            React Right / RCP y Primeros Auxilios
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">RCP, emergencias y respuesta</div>
+          </a>
+
+          <a href="{% url 'diver_stress_rescue' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Diver Stress &amp; Rescue
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Prevención y rescate</div>
+          </a>
+        </div>
+
+        <!-- Especialidades -->
+        <div class="mb-3" style="font-weight:900; color:rgba(15,23,42,.85); letter-spacing:.06em; text-transform:uppercase; font-size:12px;">
+          Especialidades
+        </div>
+
+        <div class="d-grid gap-2">
+          <a href="{% url 'nitrox' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Nitrox
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Más tiempo de fondo</div>
+          </a>
+
+          <a href="{% url 'profundo' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Profundo
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Explora más allá de 18m</div>
+          </a>
+
+          <a href="{% url 'flotabilidad' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Técnicas de flotabilidad
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Control y eficiencia</div>
+          </a>
+
+          <a href="{% url 'nocturno' %}" class="btn btn-lg fw-bold"
+             style="border-radius:16px; padding:14px 16px; background:#fff; color:rgba(15,23,42,.92); border:1px solid rgba(15,23,42,.14); text-align:left;">
+            Nocturno
+            <div style="font-weight:600; opacity:.75; font-size:13px; margin-top:4px;">Otra vida marina de noche</div>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="background:#fff; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="https://api.whatsapp.com/send?phone=50687172883&text=Hola%20Dive%20Costa%20Rica%20%F0%9F%91%8B%20Quiero%20info%20de%20cursos%20avanzados%20y%20especialidades.%20%C2%BFMe%20ayudan%20con%20fechas%20y%20precios%3F"
+           class="btn btn-primary fw-bold"
+           style="border-radius:999px; padding:10px 16px; background:#ff8a00; border:none;">
+          Consultar por WhatsApp
+        </a>
+
         <button type="button" class="btn btn-light fw-bold" data-bs-dismiss="modal"
                 style="border-radius:999px; padding:10px 16px;">
           Cerrar

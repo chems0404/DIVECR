@@ -10,27 +10,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # =====================
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-dev-key")
 
-DEBUG = os.environ.get("DEBUG", "0") == "1"
+DEBUG = os.environ.get("DEBUG", "1") == "1"  # local por defecto
 
-# Hosts permitidos (Railway + local). Puedes añadir tu dominio aquí también.
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "divecr-production.up.railway.app,.up.railway.app,localhost,127.0.0.1",
+    "localhost,127.0.0.1,divecr-production.up.railway.app,.up.railway.app",
 ).split(",")
 
 CSRF_TRUSTED_ORIGINS = [
     "https://divecr-production.up.railway.app",
-    # Si usas dominio propio, agrega aquí:
-    # "https://tudominio.com",
 ]
 
-# Si usas proxy (Railway / reverse proxy)
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_SSL_REDIRECT = not DEBUG
-
-# Recomendado cuando hay SSL redirect detrás de proxy
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+# ===== HTTPS / SSL =====
+if DEBUG:
+    # LOCAL: nunca forzar https
+    SECURE_SSL_REDIRECT = False
+    SECURE_PROXY_SSL_HEADER = None
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    # PROD (Railway / reverse proxy)
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # =====================
 # APPLICATIONS
