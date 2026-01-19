@@ -264,7 +264,7 @@
       color:rgba(15, 23, 42, 0.95);
     }
 
-    /* ================= NUEVA SECCIÓN: OPEN WATER ================= */
+    /* ================= SECCIÓN: OPEN WATER ================= */
     .ow{
       padding:90px 20px;
       background:#ffffff;
@@ -358,28 +358,130 @@
       margin-top:auto;
     }
 
-    /* ================= RESPONSIVE (CORREGIDO) ================= */
-    @media (max-width:991px){
-      .main-logo{ margin-left:auto; margin-right:auto; }
-      .text-block{ max-width:none; }
-
-      .intent-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-      .ow-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-
-      .btn-cta, .btn-ghost{ width:100%; min-width:unset; }
+    /* ================= NUEVA SECCIÓN (3 CARDS) ================= */
+    /* Copia el estilo visual de OW, pero SIN doble padding para evitar “costura” con la sección anterior */
+    .info3{
+      padding:40px 20px 200px; /* menos padding arriba (clave) */
+      background:#ffffff;
     }
 
-    @media (max-width:576px){
-      .logos-grid{ grid-template-columns:1fr; }
-      .logo-box{ height:130px; }
-      .partner-logo{ max-height:130px; }
-      .blue-oceans{ height:160px; }
-      .intent-card{ padding:26px; }
-      .ow-card{ padding:26px; }
-
-      .intent-grid{ grid-template-columns:1fr; }
-      .ow-grid{ grid-template-columns:1fr; }
+    .info3-inner{
+      max-width:var(--slide-max);
+      margin:0 auto;
     }
+
+    .info3-header{
+      text-align:center;
+      max-width:980px;
+      margin:0 auto 46px;
+    }
+
+    .info3-title{
+      font-size:clamp(34px, 3.6vw, 58px);
+      font-weight:900;
+      letter-spacing:-0.7px;
+      color:var(--ink);
+      margin-bottom:12px;
+    }
+
+    .info3-subtitle{
+      font-size:clamp(18px, 1.25vw, 22px);
+      color:var(--muted);
+      line-height:1.7;
+      margin:0;
+    }
+
+    .info3-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:22px;
+      align-items:stretch;
+    }
+
+    /* Cards idénticas a OW */
+    .info3-card{
+      border:1px solid rgba(15, 23, 42, 0.08);
+      border-radius:22px;
+      padding:30px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      box-shadow:0 10px 28px rgba(2, 6, 23, 0.06);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      min-height:320px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .info3-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 45px rgba(2, 6, 23, 0.12);
+    }
+
+    .info3-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:0.2px;
+      color:var(--ink);
+      opacity:0.9;
+      margin-bottom:16px;
+      font-size:13px;
+      text-transform:uppercase;
+    }
+
+    .info3-title-card{
+      font-size:clamp(22px, 2vw, 30px);
+      font-weight:900;
+      letter-spacing:-0.4px;
+      color:var(--ink);
+      margin-bottom:10px;
+    }
+
+    .info3-desc{
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.65;
+      margin-bottom:18px;
+    }
+
+    .info3-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:auto;
+    }
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:991px){
+  .main-logo{ margin-left:auto; margin-right:auto; }
+  .text-block{ max-width:none; }
+
+  .intent-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .ow-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .info3-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+
+  .btn-cta, .btn-ghost{ width:100%; min-width:unset; }
+}
+
+@media (max-width:576px){
+  .logos-grid{ grid-template-columns:1fr; }
+  .logo-box{ height:130px; }
+  .partner-logo{ max-height:130px; }
+  .blue-oceans{ height:160px; }
+  .intent-card{ padding:26px; }
+  .ow-card{ padding:26px; }
+
+  /* Solo si de verdad existe .info3-card en tu HTML */
+  /* .info3-card{ padding:26px; } */
+
+  .intent-grid{ grid-template-columns:1fr; }
+  .ow-grid{ grid-template-columns:1fr; }
+  .info3-grid{ grid-template-columns:1fr; }
+}
+
   </style>
 </head>
 
@@ -588,7 +690,6 @@
             WhatsApp
           </a>
 
-          <!-- CAMBIO: ahora abre modal con menú -->
           <button type="button" class="btn-ghost" data-bs-toggle="modal" data-bs-target="#otrosCursosModal">
             Ver cursos
           </button>
@@ -607,10 +708,10 @@
         </div>
 
         <div class="ow-actions">
-          <a href="https://api.whatsapp.com/send?phone=50687172883&text=Hola%20Dive%20Costa%20Rica%20%F0%9F%91%8B%20Me%20interesan%20los%20proyectos%20y%20actividades%20para%20apoyar%20el%20oc%C3%A9ano.%20%C2%BFQu%C3%A9%20tienen%20disponible%3F"
-             class="btn-cta" target="_blank" rel="noopener">
+          <a href="{% url 'apasionados_oceano' %}" class="btn-cta">
             Proyectos
           </a>
+
           <a href="https://api.whatsapp.com/send?phone=50687172883" class="btn-ghost" target="_blank" rel="noopener">
             Conocer más
           </a>
@@ -620,6 +721,91 @@
     </div>
   </div>
 </section>
+
+<!-- ================= NUEVA SECCIÓN (3 CARDS): CONÓCENOS | TESTIMONIOS | GALERÍA ================= -->
+<section class="info3" id="info">
+  <div class="info3-inner">
+
+    <div class="info3-header">
+      <h2 class="info3-title">Dive Costa Rica</h2>
+      <p class="info3-subtitle">
+        Conocé quiénes somos, leé lo que dicen nuestros clientes y mirá la vida marina que nos inspira.
+      </p>
+    </div>
+
+    <div class="info3-grid">
+
+      <!-- Conócenos -->
+      <div class="info3-card" id="conocenos">
+        <div>
+          <div class="info3-tag"><span class="dot"></span> Conócenos</div>
+          <h3 class="info3-title-card">Buceo con propósito</h3>
+          <p class="info3-desc">
+            Somos un Eco Dive &amp; Training Center enfocado en educación, buenas prácticas y conservación marina.
+            Queremos que cada inmersión sea segura, profesional y respetuosa con el océano.
+          </p>
+        </div>
+
+        <div class="info3-actions">
+          <!-- Placeholder (sin template / sin url): luego lo conectas -->
+          <a href="#conocenos" class="btn-cta">
+            Conócenos
+          </a>
+        </div>
+      </div>
+
+      <!-- Testimonios -->
+      <div class="info3-card" id="testimonios">
+        <div>
+          <div class="info3-tag"><span class="dot"></span> Testimonios</div>
+          <h3 class="info3-title-card">Lo que dicen de nosotros</h3>
+          <p class="info3-desc">
+            Experiencias reales de personas que bucearon y aprendieron con nuestro equipo.
+            Calidad, seguridad y atención como debe ser.
+          </p>
+        </div>
+
+        <div class="info3-actions">
+          <!-- Placeholder (sin template / sin url): luego lo conectas -->
+          <a href="#testimonios" class="btn-cta">
+            Ver testimonios
+          </a>
+
+          <a href="https://api.whatsapp.com/send?phone=50687172883&text=Hola%20Dive%20Costa%20Rica%20%F0%9F%91%8B%20Quiero%20leer%20testimonios%20y%20consultar%20por%20disponibilidad."
+             class="btn-ghost" target="_blank" rel="noopener">
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Galería -->
+      <div class="info3-card" id="galeria">
+        <div>
+          <div class="info3-tag"><span class="dot"></span> Galería</div>
+          <h3 class="info3-title-card">Fotos &amp; vida marina</h3>
+          <p class="info3-desc">
+            Mirá momentos reales: inmersiones, cursos, snorkel y encuentros con la vida marina
+            en Punta Leona y alrededores.
+          </p>
+        </div>
+
+        <div class="info3-actions">
+          <!-- Placeholder (sin template / sin url): luego lo conectas -->
+          <a href="#galeria" class="btn-cta">
+            Ver galería
+          </a>
+
+          <a href="https://api.whatsapp.com/send?phone=50687172883&text=Hola%20Dive%20Costa%20Rica%20%F0%9F%91%8B%20Quiero%20ver%20la%20galer%C3%ADa%20y%20consultar%20por%20tours%20o%20cursos."
+             class="btn-ghost" target="_blank" rel="noopener">
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 
 <!-- ===== MODAL: Elegir tipo de tour ===== -->
 <div class="modal fade" id="toursModal" tabindex="-1" aria-labelledby="toursModalLabel" aria-hidden="true">
