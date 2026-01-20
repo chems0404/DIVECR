@@ -1,0 +1,297 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testimonios | Dive Costa Rica</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --slide-max: 1400px;
+      --ink: #0f172a;
+      --muted: #334155;
+      --accent: #ff8a00;
+      --accent-hover: #e67600;
+    }
+
+    body{ background:#ffffff; }
+    html{ scroll-behavior:smooth; }
+
+    /* ================= PAGE ================= */
+    .page{
+      padding:90px 20px 110px;
+      background:#ffffff;
+    }
+    .page-inner{
+      max-width:var(--slide-max);
+      margin:0 auto;
+    }
+
+    .page-header{
+      text-align:center;
+      max-width:980px;
+      margin:0 auto 46px;
+    }
+
+    .page-title{
+      font-size:clamp(34px, 3.6vw, 58px);
+      font-weight:900;
+      letter-spacing:-0.7px;
+      color:var(--ink);
+      margin-bottom:12px;
+    }
+
+    .page-subtitle{
+      font-size:clamp(18px, 1.25vw, 22px);
+      color:var(--muted);
+      line-height:1.7;
+      margin:0;
+    }
+
+    /* ================= GRID ================= */
+    .t-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:22px;
+      align-items:stretch;
+    }
+
+    .t-card{
+      border:1px solid rgba(15, 23, 42, 0.08);
+      border-radius:22px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      box-shadow:0 10px 28px rgba(2, 6, 23, 0.06);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:360px;
+    }
+
+    .t-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 45px rgba(2, 6, 23, 0.12);
+    }
+
+    .t-photo{
+      width:100%;
+      aspect-ratio: 4 / 3;
+      object-fit:cover;
+      display:block;
+      background:rgba(15, 23, 42, 0.04);
+    }
+
+    .t-body{
+      padding:22px 24px 24px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      height:100%;
+    }
+
+    .t-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:0.2px;
+      color:var(--ink);
+      opacity:0.9;
+      font-size:13px;
+      text-transform:uppercase;
+      margin:0;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:var(--accent);
+      display:inline-block;
+    }
+
+    .t-quote{
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.75;
+      margin:0;
+    }
+
+    .t-author{
+      margin-top:auto;
+      font-weight:900;
+      letter-spacing:-0.2px;
+      color:var(--ink);
+      font-size:15px;
+      text-transform:uppercase;
+      opacity:0.95;
+    }
+
+    /* ================= CTA BAR ================= */
+    .cta-bar{
+      margin-top:46px;
+      border:1px solid rgba(15, 23, 42, 0.08);
+      border-radius:22px;
+      padding:22px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      box-shadow:0 10px 28px rgba(2, 6, 23, 0.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .cta-text{
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.6;
+      margin:0;
+      max-width:760px;
+    }
+
+    .btn-cta{
+      background:var(--accent);
+      border:none;
+      color:#fff;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:15px;
+      transition:all 0.25s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:190px;
+      cursor:pointer;
+    }
+
+    .btn-cta:hover{
+      background:var(--accent-hover);
+      transform:translateY(-2px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.15);
+      color:#fff;
+    }
+
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(15, 23, 42, 0.18);
+      color:rgba(15, 23, 42, 0.9);
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:15px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:190px;
+      transition:all 0.25s ease;
+      cursor:pointer;
+    }
+
+    .btn-ghost:hover{
+      border-color:rgba(15, 23, 42, 0.35);
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(2, 6, 23, 0.10);
+      color:rgba(15, 23, 42, 0.95);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width:991px){
+      .t-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+      .btn-cta, .btn-ghost{ width:100%; min-width:unset; }
+      .cta-bar{ justify-content:flex-start; }
+    }
+
+    @media (max-width:576px){
+      .t-grid{ grid-template-columns:1fr; }
+      .t-body{ padding:20px 20px 22px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="page">
+  <div class="page-inner">
+
+    <header class="page-header">
+      <h1 class="page-title">Testimonios</h1>
+      <p class="page-subtitle">
+        Lo que dicen nuestros clientes: experiencias reales, atención profesional y amor por el océano.
+      </p>
+    </header>
+
+    <div class="t-grid">
+
+      <!-- Testimonio 1 -->
+      <article class="t-card">
+        <img class="t-photo" src="{% static 'img/testimonio1.avif' %}" alt="Testimonio 1 - Dive Costa Rica">
+        <div class="t-body">
+          <p class="t-tag"><span class="dot"></span> Testimonio</p>
+          <p class="t-quote">
+            “Por qué Dive Costa Rica y no las demás? sencillo! Se esmeran en que uno siempre esté cómoda, atentos a las
+            necesidades de cada cliente. Para ellos no se trata solo de bucear, si no de marcar la diferencia
+            instruyendo a sus clientes y llenándolos de conocimiento antes de cada inmersión y siempre enfocados en la
+            conservación 👏🏻👏🏻 Gracias por ser parte del cambio y darnos tan lindos y únicos momentos 🐙🐠🐳”.
+          </p>
+          <div class="t-author">KARINA ARIAS</div>
+        </div>
+      </article>
+
+      <!-- Testimonio 2 -->
+      <article class="t-card">
+        <img class="t-photo" src="{% static 'img/testimonio2.avif' %}" alt="Testimonio 2 - Dive Costa Rica">
+        <div class="t-body">
+          <p class="t-tag"><span class="dot"></span> Testimonio</p>
+          <p class="t-quote">
+            “Una empresa súper recomendada. Son profesionales que tienen muchos años de experiencia en el mundo del
+            buceo por ende te sientes seguro ya que se nota que son conocedores del ambiente. Se encargan de enseñarte
+            todo con lujo y detalles, y cuando organizan giras se encargan que todo sea perfecto! Sin olvidar que
+            siempre le tienen a uno detallitos en sus giras 💕 ¡Ellos hacen que sientas que sos parte de su familia!”.
+          </p>
+          <div class="t-author">MADELLINE SANCHEZ</div>
+        </div>
+      </article>
+
+      <!-- Testimonio 3 -->
+      <article class="t-card">
+        <img class="t-photo" src="{% static 'img/testimonio3.avif' %}" alt="Testimonio 3 - Dive Costa Rica">
+        <div class="t-body">
+          <p class="t-tag"><span class="dot"></span> Testimonio</p>
+          <p class="t-quote">
+            “Excelentes profesionales, atención de calidad y sobre todo llenos de mucha pasión que se transmite a los
+            clientes con cada clase y experiencia bajo el mar”.
+          </p>
+          <div class="t-author">FELIPE BUSTOS</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="cta-bar">
+      <p class="cta-text">
+        ¿Querés vivir una experiencia así? Escribinos y te ayudamos con tours, cursos y disponibilidad.
+      </p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn-cta" href="https://api.whatsapp.com/send?phone=50687172883" target="_blank" rel="noopener">
+          WhatsApp
+        </a>
+        <a class="btn-ghost" href="{% url 'home' %}">
+          Volver al home
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

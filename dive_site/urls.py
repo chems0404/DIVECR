@@ -31,4 +31,11 @@ urlpatterns = [
 
     # Comunidad / Proyectos (Apasionados por el océano)
     path('oceano/apasionados/', views.apasionados_oceano, name='apasionados_oceano'),
+
+    path('conocenos/', views.conocenos, name='conocenos'),
+    path('testimonios/', views.testimonios, name='testimonios'),
+    path('galeria/', views.galeria, name='galeria'),
+
+
+
 ]

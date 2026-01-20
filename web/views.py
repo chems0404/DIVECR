@@ -69,3 +69,11 @@ def apasionados_oceano(request):
     Más adelante aquí irá el template de proyectos / conservación.
     """
     return render(request, "apasionados_oceano.html")
+
+def conocenos(request):
+    return render(request, "conocenos.html")
+
+def testimonios(request):
+    return render(request, "testimonios.html")
+def galeria(request):
+    return render(request, "galeria.html")
